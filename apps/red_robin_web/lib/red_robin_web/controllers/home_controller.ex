@@ -1,4 +1,4 @@
-defmodule RedRobinWeb.PageController do
+defmodule RedRobinWeb.HomeController do
   use RedRobinWeb, :controller
 
   def index(conn, _params) do
