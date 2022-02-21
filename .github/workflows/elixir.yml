@@ -1,4 +1,4 @@
-name: Elixir CI
+name: Elixir
 
 on:
   push:
@@ -7,8 +7,31 @@ on:
     branches: [ main ]
 
 jobs:
-  build:
+  lint: 
+    name: Lint
+    runs-on: ubuntu-latest
 
+    steps:
+    - uses: actions/checkout@v2
+    - name: Set up Elixir
+      uses: erlef/setup-beam@988e02bfe678367a02564f65ca2e37726dc0268f
+      with:
+        elixir-version: '1.12.3' # Define the elixir version [required]
+        otp-version: '24.1' # Define the OTP version [required]
+    - name: Restore dependencies cache
+      uses: actions/cache@v2
+      with:
+        path: deps
+        key: ${{ runner.os }}-mix-${{ hashFiles('**/mix.lock') }}
+        restore-keys: ${{ runner.os }}-mix-
+    - name: Install dependencies
+      run: mix deps.get
+    - name: Format Check
+      run: mix format --check-formatted
+    - name: Style Check
+      run: mix credo
+
+  build:
     name: Build and test
     runs-on: ubuntu-latest
 
@@ -39,12 +62,5 @@ jobs:
         restore-keys: ${{ runner.os }}-mix-
     - name: Install dependencies
       run: mix deps.get
-    - name: Setup Database
-      env:
-        POSTGRES_HOST: 127.0.0.1
-        POSTGRES_USER: postgres
-        POSTGRES_PASSWORD: postgres
-        POSTGRES_PORT: ${{ job.services.postgres.ports[5432] }}
-      run: mix ecto.migrate
     - name: Run tests
       run: mix test
