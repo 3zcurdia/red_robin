@@ -7,10 +7,11 @@ on:
     branches: [ main ]
 
 jobs:
-  lint: 
+  lint:
     name: Lint
     runs-on: ubuntu-latest
-
+    env:
+      MIX_ENV: test
     steps:
     - uses: actions/checkout@v2
     - name: Set up Elixir
@@ -34,7 +35,8 @@ jobs:
   build:
     name: Build and test
     runs-on: ubuntu-latest
-
+    env:
+      MIX_ENV: test
     services:
       postgres:
         image: postgres:13
