@@ -16,6 +16,7 @@ defmodule RedRobinWeb.ChannelCase do
   """
 
   use ExUnit.CaseTemplate
+  alias Ecto.Adapters.SQL.Sandbox, as: Sandbox
 
   using do
     quote do
@@ -29,7 +30,6 @@ defmodule RedRobinWeb.ChannelCase do
   end
 
   setup tags do
-    alias Ecto.Adapters.SQL.Sandbox, as: Sandbox
     pid = Sandbox.start_owner!(RedRobin.Repo, shared: not tags[:async])
     on_exit(fn -> Sandbox.stop_owner(pid) end)
     :ok
