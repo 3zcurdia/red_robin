@@ -14,7 +14,7 @@ defmodule RedRobin.Umbrella.MixProject do
   defp deps do
     [
       {:credo, "~> 1.6", only: [:dev, :test], runtime: false},
-      {:ex_doc, "~> 0.29.0", only: :dev, runtime: false}
+      {:ex_doc, "~> 0.30.1", only: :dev, runtime: false}
     ]
   end
 
